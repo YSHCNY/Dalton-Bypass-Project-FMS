@@ -61,11 +61,11 @@
             </label>
 
             <div id="dropZone"
-                 class="rounded-xl border-2 border-dashed border-gray-300
-                        p-6 text-center cursor-pointer
+                 class="rounded-xl border-2  border-dashed border-gray-300
+                        p-6 text-center cursor-pointer items-center
                         transition hover:border-blue-500 hover:bg-blue-50">
 
-              <p class="text-2xl mb-2"><?= $cloudIcon ?></p>
+              <p class="text-3xl  mb-2"><?= $cloudIcon ?></p>
               <p class="font-medium text-gray-700">
                 Drag & drop a file here
               </p>

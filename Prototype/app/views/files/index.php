@@ -27,7 +27,7 @@
               px-4 py-2.5 rounded-xl
               shadow-sm hover:bg-teal-700 border-2 border-dashed
               transition">
-      ⬆️
+      <?=$fileIcon?>
      
       Upload New File 
     </a>
@@ -81,7 +81,7 @@
                 </td>
 
                 <td class="px-4 py-3 text-right">
-                  <span class = 'text-stone-800'><?= htmlspecialchars($file['uploader'] ?? $file['uploaded_by']) ?></span> <br>
+                  <span class = 'text-stone-800'><?= htmlspecialchars($file['firstName'] . " " . $file['lastName']) ?></span> <br>
                   <span class = 'text-stone-400'><?= htmlspecialchars($file['position'] ?? $file['position']) ?></span>
 
                 </td>
@@ -94,23 +94,24 @@
                   <div class="flex justify-center gap-2">
 
                     <a href="index.php?controller=Files&action=download&file=<?= urlencode($file['filename']) ?>"
-                       class="p-2 rounded-lg bg-sky-100 border border-sky-500 text-white hover:bg-sky-600 transition"
+                       class="p-2 rounded-lg bg-sky-100 border border-sky-500 text-sky-500 hover:text-white  hover:bg-sky-600 transition"
                        title="Download">
-                      ⬇️
+                      <?= $downloadIcon ?>
                     </a>
                 <?php if($_SESSION['user_level'] === '1'): ?>
                     <a href="index.php?controller=Files&action=edit&id=<?= $file['id'] ?>"
-                       class="p-2 rounded-lg bg-emerald-100 border border-emerald-500 text-white hover:bg-emerald-600 transition"
+                       class="p-2 rounded-lg bg-emerald-100 border border-emerald-500 text-emerald-500 hover:text-white  hover:bg-emerald-600 transition"
                        title="Edit">
-                      ✏️
+                                            <?= $editIcon ?>
+
                     </a>
             
 
                     <a href="index.php?controller=Files&action=delete&id=<?= $file['id'] ?>"
                        onclick="return confirm('Delete this file?')"
-                       class="p-2 rounded-lg bg-red-50 border border-red-500 text-white hover:bg-red-600 transition"
+                       class="p-2 rounded-lg bg-red-50 border border-red-500 text-red-600 hover:text-white hover:bg-red-600 transition"
                        title="Delete">
-                      ❌
+                      <?= $deleteIcon ?>
                     </a>
     <?php endif; ?>
                   </div>

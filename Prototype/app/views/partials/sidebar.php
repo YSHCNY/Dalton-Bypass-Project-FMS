@@ -7,7 +7,7 @@ $currentAction = $_GET['action'] ?? '';
      class="fixed top-0 left-0 h-screen w-72
             bg-white/30 backdrop-blur-xl
             border-r-2 border-stone-50
-           
+            shadow
             flex flex-col z-30 ">
 
   <div class="px-5 py-4 ">
@@ -25,7 +25,7 @@ $currentAction = $_GET['action'] ?? '';
          class="flex items-center gap-3 px-3 py-2.5 rounded-xl  
           <?= ($currentController == 'Auth' && $currentAction == 'dashboard') ? 'bg-teal-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
       
-        📊
+        <?= $dashboardIcon ?>
         Dashboard
       </a>
     </li>
@@ -34,7 +34,7 @@ $currentAction = $_GET['action'] ?? '';
       <a href="index.php?controller=Files&action=files"
          class="flex items-center gap-3 px-3 py-2.5 rounded-xl  
          <?= ($currentController == 'Files' && $currentAction == 'files') ? 'bg-teal-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
-        🗂️
+        <?= $fileIcon ?>
         Files
       </a>
     </li>
@@ -45,7 +45,7 @@ $currentAction = $_GET['action'] ?? '';
     <li>
       <a href="index.php?controller=Auth&action=register"
          class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100 transition">
-        👥
+        <?= $usersIcon ?>
         Users
       </a>
     </li>

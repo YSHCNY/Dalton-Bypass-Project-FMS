@@ -24,8 +24,8 @@
 </head>
 
 
-<body class=" min-h-screen bg-gradient-to-tr from-teal-100 via-teal-50 to-teal-50">
-
+<body class=" bg-light">
+<?php require __DIR__ . '/../partials/icons.php'; ?>
   <!-- Sidebar -->
   <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 

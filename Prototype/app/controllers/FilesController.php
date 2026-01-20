@@ -20,14 +20,6 @@ class FilesController extends Controller {
             }
 
 
-            // //list all files
-            // public function index() {
-            //      $files = $this->model->getAll();
-            //      $filesCateg = $this->filesCategModel->getAllCateg();
-            //      require __DIR__ . '/../views/files/index.php'; 
-
-            // }
-
 
                   
             public function files() {
@@ -70,42 +62,61 @@ class FilesController extends Controller {
                 }
 
 
-                public function store() {
-                    if (!isset($_SESSION['user'])) {
-                        $this->redirect('index.php?controller=Auth&action=login');
-                    }
+public function store() {
+    if (!isset($_SESSION['user'])) {
+        $this->redirect('index.php?controller=Auth&action=login');
+    }
 
-                    if (isset($_FILES['file'])) {
-                        $fileName = $_FILES['file']['name'];
-                        $targetDir =    __DIR__ . "/../uploads/";
-                        $targetFile = $targetDir . basename($fileName);
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
 
-                        $description = $_POST['description'] ?? '';
-                        $uploaded_by = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'] ?? 'guest';
-                        $position = $_SESSION['position'] ?? 'guest';
+        // Absolute path for PHP to save file
+        $uploadDir = __DIR__ . '/../uploads/';
 
-                        $fileCategory = $_POST['fileCategory'] ?? 'Unacategorized';
+        // Create uploads folder if it doesn't exist
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
 
-                        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
-                            // pass all 5 arguments
-                            $this->model->create($fileName, $targetFile, $description, $uploaded_by, $fileCategory, $position);
-                            session_start();
-                            $_SESSION['message'] = "File uploaded successfully!";
-                            $_SESSION['msg_type'] = "success";
-                            header("Location: index.php?controller=Files&action=files");
+        // Sanitize filename
+        $originalName = $_FILES['file']['name'];
+        $fileName = basename($originalName);
+        $fileName = preg_replace("/[^A-Za-z0-9\.\-_() ]/", '_', $fileName);
 
-                            exit;
-                        } else {
-                            session_start();
-                            $_SESSION['message'] = "EEERRRRRRRRRRRRRRR!";
-                            $_SESSION['msg_type'] = "success";
-                            header("Location: index.php?controller=Files&action=files");
-                        echo "Failed to upload file.";
-                    
+        $targetFile = $uploadDir . $fileName; // absolute path for move_uploaded_file
+        $relativeFile = 'uploads/' . $fileName; // path to store in DB
 
-                        }
-                    }
-                }
+        $description = $_POST['description'] ?? '';
+        $uploaded_by = $_SESSION['user_id'] ?? '0';
+        $position = $_SESSION['position'] ?? 'Guest';
+        $fileCategory = $_POST['fileCategory'] ?? 'Uncategorized';
+
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
+            // Save relative path to DB
+            $this->model->create($fileName, $relativeFile, $description, $uploaded_by, $fileCategory, $position);
+
+            session_start();
+            $_SESSION['message'] = "File uploaded successfully!";
+            $_SESSION['msg_type'] = "success";
+            header("Location: index.php?controller=Files&action=files");
+            exit;
+
+        } else {
+            session_start();
+            $_SESSION['message'] = "Failed to upload file!";
+            $_SESSION['msg_type'] = "danger";
+            header("Location: index.php?controller=Files&action=files");
+            exit;
+        }
+
+    } else {
+        session_start();
+        $_SESSION['message'] = "No file selected or upload error!";
+        $_SESSION['msg_type'] = "warning";
+        header("Location: index.php?controller=Files&action=files");
+        exit;
+    }
+}
+
 
 
 
@@ -232,9 +243,6 @@ class FilesController extends Controller {
                     session_destroy();
                     $this->redirect('index.php?controller=Auth&action=login');
             }    
-
-
-
 
 
 

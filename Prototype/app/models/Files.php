@@ -14,7 +14,7 @@ class FileModel {
 
       // Get all files
     public function getAll() {
-        $stmt = $this->db->query("SELECT * FROM ".$this->table." ORDER BY uploadedat DESC");
+        $stmt = $this->db->query("SELECT f.*, u.firstName, u.lastName, u.position FROM ".$this->table." f LEFT JOIN UserTbl u ON f.uploader = u.id ORDER BY f.uploadedat DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
