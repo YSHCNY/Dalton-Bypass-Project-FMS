@@ -62,60 +62,62 @@ class FilesController extends Controller {
                 }
 
 
-public function store() {
-    if (!isset($_SESSION['user'])) {
+public function register() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username   = $_POST['username'];
+        $password   = $_POST['password'];
+        $confirm    = $_POST['confirm_password'];
+        $firstName  = $_POST['firstName'];
+        $lastName   = $_POST['lastName'];
+        $position   = $_POST['position'];
+        $userLevel  = $_POST['user_level'];
+
+        if ($password !== $confirm) {
+            $error = "Passwords do not match";
+            $this->view('auth/register', ['error' => $error]);
+            return;
+        }
+
+        $userModel = new User();
+
+        if ($userModel->findByUsername($username)) {
+            $error = "Username already exists";
+            $this->view('auth/register', ['error' => $error]);
+            return;
+        }
+
+        // === Profile picture upload ===
+        $profileFileName = null; // default
+        $relativePath = null;
+
+        if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+            // Absolute path on server
+            $uploadDir = __DIR__ . '/../assets/profiles/';
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+            $originalName = $_FILES['profile_picture']['name'];
+            $profileFileName = preg_replace("/[^A-Za-z0-9\.\-_() ]/", '_', basename($originalName));
+            $targetFile = $uploadDir . $profileFileName;
+
+            if (!move_uploaded_file($_FILES['profile_picture']['tmp_name'], $targetFile)) {
+                $error = "Failed to upload profile picture. Check folder permissions.";
+                $this->view('auth/register', ['error' => $error]);
+                return;
+            }
+
+            // **Store relative path**
+            $relativePath = 'assets/profiles/' . $profileFileName;
+        }
+
+        // Pass relative path to model
+        $userModel->create($username, $password, $firstName, $lastName, $position, $userLevel, $relativePath);
+
         $this->redirect('index.php?controller=Auth&action=login');
-    }
-
-    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-
-        // Absolute path for PHP to save file
-        $uploadDir = __DIR__ . '/../uploads/';
-
-        // Create uploads folder if it doesn't exist
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-
-        // Sanitize filename
-        $originalName = $_FILES['file']['name'];
-        $fileName = basename($originalName);
-        $fileName = preg_replace("/[^A-Za-z0-9\.\-_() ]/", '_', $fileName);
-
-        $targetFile = $uploadDir . $fileName; // absolute path for move_uploaded_file
-        $relativeFile = 'uploads/' . $fileName; // path to store in DB
-
-        $description = $_POST['description'] ?? '';
-        $uploaded_by = $_SESSION['user_id'] ?? '0';
-        $position = $_SESSION['position'] ?? 'Guest';
-        $fileCategory = $_POST['fileCategory'] ?? 'Uncategorized';
-
-        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
-            // Save relative path to DB
-            $this->model->create($fileName, $relativeFile, $description, $uploaded_by, $fileCategory, $position);
-
-            session_start();
-            $_SESSION['message'] = "File uploaded successfully!";
-            $_SESSION['msg_type'] = "success";
-            header("Location: index.php?controller=Files&action=files");
-            exit;
-
-        } else {
-            session_start();
-            $_SESSION['message'] = "Failed to upload file!";
-            $_SESSION['msg_type'] = "danger";
-            header("Location: index.php?controller=Files&action=files");
-            exit;
-        }
-
     } else {
-        session_start();
-        $_SESSION['message'] = "No file selected or upload error!";
-        $_SESSION['msg_type'] = "warning";
-        header("Location: index.php?controller=Files&action=files");
-        exit;
+        $this->view('auth/register');
     }
 }
+
 
 
 

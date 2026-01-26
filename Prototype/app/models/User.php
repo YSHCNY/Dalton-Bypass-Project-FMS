@@ -12,17 +12,12 @@ class User extends Model {
 
 
      // Create new user (registration)
-    public function create($username, $password, $firstName, $lastName, $position, $userLevel) {
-        $stmt = $this->db->prepare("INSERT INTO UserTbl (`username`, `password`, `firstName`, `lastName`, `position`, `userLevel`) VALUES (:username, :password, :firstName, :lastName, :position, :userLevel)");
-        return $stmt->execute([
-            'username' => $username,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'position' => $position,
-            'userLevel' => $userLevel
-        ]);
-    }
+public function create($username, $password, $firstName, $lastName, $position, $userLevel, $profilePicture = null) {
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $this->db->prepare("INSERT INTO UserTbl (`username`, `password`, `firstName`, `lastName`, `position`, `userLevel`, `profile_picture`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    return $stmt->execute([$username, $hashedPassword, $firstName, $lastName, $position, $userLevel, $profilePicture]);
+}
+
 
 
 }

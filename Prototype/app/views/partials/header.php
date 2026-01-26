@@ -29,12 +29,14 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
 
   <div class="flex items-center gap-3">
     <div class = 'text-right'>
-    <span class="font-medium text-stone-50"><?= $_SESSION['firstName'] . ' ' . $_SESSION['lastName'] ?></span> <br>
+    <span class="font-medium text-stone-50"><?= $_SESSION['firstName'] . ' ' . $_SESSION['lastName']?></span> <br>
     <span class="font-normal text-teal-500"><?= $_SESSION['position'] ?></span>
 </div>
-    <img src="uploads/<?= htmlspecialchars($user_image) ?>"
+
+    <img src=".././app/assets/profiles/<?= $_SESSION['profile_picture']  ?>" 
          class="w-9 h-9 rounded-full object-cover shadow-sm">
   </div>
+
 </nav>
 
 <script>

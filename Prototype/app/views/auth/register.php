@@ -16,8 +16,23 @@
           </div>
         <?php endif; ?>
 
-        <form method="POST" action="" class="space-y-6">
+        <form method="POST" action="" class="space-y-6" enctype="multipart/form-data">
 
+<div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+        Profile Picture (optional)
+    </label>
+
+    <div id="profileDropZone" 
+         class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-4 cursor-pointer hover:border-blue-500 transition relative">
+        
+        <img id="profilePreview" src="" alt="Preview" class="hidden w-24 h-24 rounded-full object-cover mb-2 shadow-sm">
+        <p class="text-gray-500 mb-1">Drag & drop or click to select an image</p>
+        <p class="text-gray-400 text-xs">PNG, JPG, GIF (Max 2MB)</p>
+  
+        <input type="file" name="profile_picture" id="profileInput" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+    </div>
+</div>
           <!-- Name + Position -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
@@ -163,3 +178,47 @@
   </div>
 
 </div>
+
+
+<script>
+const profileInput = document.getElementById('profileInput');
+const profilePreview = document.getElementById('profilePreview');
+const profileDropZone = document.getElementById('profileDropZone');
+
+profileDropZone.addEventListener('click', () => profileInput.click());
+
+profileInput.addEventListener('change', () => {
+    const file = profileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            profilePreview.src = e.target.result;
+            profilePreview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Drag & drop feedback
+profileDropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    profileDropZone.classList.add('border-blue-500', 'bg-blue-50');
+});
+profileDropZone.addEventListener('dragleave', () => {
+    profileDropZone.classList.remove('border-blue-500', 'bg-blue-50');
+});
+profileDropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    profileDropZone.classList.remove('border-blue-500', 'bg-blue-50');
+    if (e.dataTransfer.files.length > 0) {
+        profileInput.files = e.dataTransfer.files;
+        const file = profileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+            profilePreview.src = e.target.result;
+            profilePreview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>

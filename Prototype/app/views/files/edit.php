@@ -9,7 +9,7 @@
 
         <!-- Header -->
         <h3 class="text-2xl font-semibold text-gray-800 mb-8">
-          Edit File
+          Edit File Information
         </h3>
 
         <form action="index.php?controller=Files&action=update"
@@ -31,11 +31,11 @@
                  class="w-full rounded-xl border border-gray-300
                         bg-gray-50 text-gray-600 text-center
                         px-4 py-10 cursor-pointer
-                        hover:bg-blue-50 transition">
+                        hover:bg-teal-50 transition">
               <p class="text-2xl mb-2"><?= $cloudIcon ?? '☁️' ?></p>
               <p class="font-medium mb-1">Drag & drop a file here</p>
               <p class="text-sm text-gray-400 mb-2">or click to select</p>
-              <div id="fileName" class="text-blue-600 text-sm"></div>
+              <div id="fileName" class="text-teal-600 text-sm"></div>
               <input type="file" name="file" id="fileInput" class="hidden">
             </div>
 
@@ -43,7 +43,7 @@
               <p class="mt-2 text-sm text-gray-500">
                 Current file:
                 <a href="index.php?controller=Files&action=download&file=<?= urlencode($file['filename']) ?>"
-                   class="text-blue-600 hover:underline">
+                   class="text-teal-600 hover:underline">
                   <?= htmlspecialchars($file['filename']) ?>
                 </a>
               </p>
@@ -58,7 +58,7 @@
             <select name="fileCategory" required
               class="w-full rounded-xl border border-gray-300
                      px-4 py-3 bg-white text-gray-800
-                     focus:outline-none focus:ring-2 focus:ring-blue-500">
+                     focus:outline-none focus:ring-2 focus:ring-teal-500">
               <?php foreach ($filesCateg as $category): ?>
                 <option value="<?= htmlspecialchars($category['category']) ?>"
                   <?= $category['category'] === $file['category'] ? 'selected' : '' ?>>
@@ -73,14 +73,14 @@
             <label class="block text-sm font-medium text-gray-600 mb-1">
               Description
             </label>
-            <input type="text"
+            <textarea type="text"
                    name="description"
                    required
                    value="<?= htmlspecialchars($file['desc']) ?>"
                    placeholder="Enter file description"
-                   class="w-full rounded-xl border border-gray-300
+                   class="w-full rounded-xl border h-64 border-gray-300
                           px-4 py-3 text-gray-800
-                          focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          focus:outline-none focus:ring-2 focus:ring-teal-500" ><?= htmlspecialchars($file['desc']) ?></textarea>
           </div>
 
           <!-- Actions -->
@@ -88,17 +88,17 @@
 
             <a href="index.php?controller=Files&action=files"
                class="w-full text-center rounded-xl
-                      border border-blue-600
-                      px-5 py-3 font-medium text-blue-600
-                      hover:bg-blue-50 transition">
+                      border border-teal-600
+                      px-5 py-3 font-medium text-teal-600
+                      hover:bg-teal-50 transition">
               Cancel
             </a>
 
             <button type="submit"
                     class="w-full rounded-xl
-                           bg-blue-600 px-5 py-3
+                           bg-teal-600 px-5 py-3
                            font-medium text-white
-                           hover:bg-blue-700 transition">
+                           hover:bg-teal-700 transition">
               Save Changes
             </button>
 
@@ -131,18 +131,18 @@ fileInput.addEventListener('change', () => {
 // Drag over styling
 dropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
-    dropZone.classList.add('bg-blue-50', 'border-blue-400');
+    dropZone.classList.add('bg-teal-50', 'border-teal-400');
 });
 
 // Remove styling on leave
 dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+    dropZone.classList.remove('bg-teal-50', 'border-teal-400');
 });
 
 // Drop file
 dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
-    dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+    dropZone.classList.remove('bg-teal-50', 'border-teal-400');
     if (e.dataTransfer.files.length) {
         fileInput.files = e.dataTransfer.files;
         fileName.textContent = `Selected: ${e.dataTransfer.files[0].name}`;

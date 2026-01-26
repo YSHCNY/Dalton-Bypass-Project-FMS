@@ -27,7 +27,7 @@
             <select name="fileCategory" required
               class="w-full rounded-xl border border-gray-300
                      px-4 py-3 text-gray-800 bg-white
-                     focus:outline-none focus:ring-2 focus:ring-blue-500">
+                     focus:outline-none focus:ring-2 focus:ring-teal-500">
               <?php if (!empty($filesCateg)): ?>
                 <?php foreach ($filesCateg as $category): ?>
                   <option value="<?= htmlspecialchars($category['category']) ?>">
@@ -45,13 +45,13 @@
             <label class="block text-sm font-medium text-gray-600 mb-1">
               Description
             </label>
-            <input type="text"
+            <textarea type="text"
                    name="description"
                    required
                    placeholder="Enter file description"
-                   class="w-full rounded-xl border border-gray-300
+                   class="w-full rounded-xl border h-64 border-gray-300
                           px-4 py-3 text-gray-800
-                          focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
           </div>
 
           <!-- Upload -->
@@ -63,7 +63,7 @@
             <div id="dropZone"
                  class="rounded-xl border-2  border-dashed border-gray-300
                         p-6 text-center cursor-pointer items-center
-                        transition hover:border-blue-500 hover:bg-blue-50">
+                        transition hover:border-teal-500 hover:bg-teal-50">
 
               <p class="text-3xl  mb-2"><?= $cloudIcon ?></p>
               <p class="font-medium text-gray-700">
@@ -73,7 +73,7 @@
                 or click to select
               </p>
 
-              <div id="fileName" class="text-sm text-blue-600 mt-2"></div>
+              <div id="fileName" class="text-sm text-teal-600 mt-2"></div>
 
               <input type="file" id="file" name="file" class="hidden" required>
             </div>
@@ -84,17 +84,17 @@
 
             <a href="index.php?controller=Files&action=files"
                class="w-full text-center rounded-xl
-                      border border-blue-600
-                      px-5 py-3 font-medium text-blue-600
-                      hover:bg-blue-50 transition">
+                      border border-teal-600
+                      px-5 py-3 font-medium text-teal-600
+                      hover:bg-teal-50 transition">
               Cancel
             </a>
 
             <button type="submit"
                     class="w-full rounded-xl
-                           bg-blue-600 px-5 py-3
+                           bg-teal-600 px-5 py-3
                            font-medium text-white
-                           hover:bg-blue-700 transition">
+                           hover:bg-teal-700 transition">
               Upload File
             </button>
 
