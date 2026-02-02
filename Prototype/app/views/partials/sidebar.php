@@ -43,8 +43,9 @@ $currentAction = $_GET['action'] ?? '';
     <li class="text-xs uppercase text-gray-400 px-3 mt-5 mb-2">More</li>
 
     <li>
-      <a href="index.php?controller=Auth&action=register"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100 transition">
+      <a href="index.php?controller=Auth&action=users"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-xl 
+         <?= ($currentController == 'Auth' && $currentAction == 'users') ? 'bg-teal-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
         <?= $usersIcon ?>
         Users
       </a>
@@ -53,12 +54,14 @@ $currentAction = $_GET['action'] ?? '';
 
   </ul>
 
-  <div class="p-4 border-t border-gray-200">
+  <!-- <div class="p-4 border-t border-gray-200">
     <a href="index.php?controller=Auth&action=logout"
        class="flex items-center justify-center gap-2 py-2.5 rounded-xl
               border border-gray-300 hover:bg-gray-100 transition">
       <i class="bi bi-box-arrow-right"></i> Logout
     </a>
-  </div>
+  </div> -->
 
 </nav>
+
+

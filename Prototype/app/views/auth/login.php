@@ -1,6 +1,14 @@
+
+
+
+<div class = 'bg-gray-100'>
+
+
+
 <div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 
   <div class="w-full max-w-4xl flex flex-col md:flex-row bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+
 
     <!-- Left Image Panel -->
     <div class="hidden md:block md:w-1/2 bg-blue-600 flex items-center justify-center">
@@ -9,9 +17,68 @@
 
     <!-- Login Form -->
     <div class="w-full md:w-1/2 p-8 md:p-12">
-         <div class="w-1/3  flex my-8">
+   
+          
+      <?php if (isset($_GET['wc']) && $_GET['wc'] === 'logout'): ?>
+      <div id="flash"
+      class="   mb-6 flex items-center gap-3
+      px-5 py-4 rounded-2xl
+      bg-gradient-to-r from-sky-500 to-blue-500
+      text-white shadow-lg
+      opacity-0 translate-y-2
+      transition-all duration-500 ease-out">
+
+
+      <!-- Animated Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-5 h-5 flex-shrink-0 animate-bounce"
+      id="flashIcon">
+      <path stroke-linecap="round" stroke-linejoin="round"
+      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+      </svg>
+
+
+      <span class="text-md font-semibold">
+      Logged Out!
+      </span>
+      </div>
+
+
+      <script>
+      const flash = document.getElementById('flash');
+      const icon = document.getElementById('flashIcon');
+
+
+      // Animate in
+      requestAnimationFrame(() => {
+      flash.classList.remove('opacity-0', 'translate-y-2');
+      });
+
+
+      // Stop bounce after entrance for polish
+      setTimeout(() => {
+      icon.classList.remove('animate-bounce');
+      icon.classList.add('animate-pulse');
+      }, 700);
+
+
+      // Fade out smoothly
+      setTimeout(() => {
+      flash.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => flash.remove(), 500);
+      }, 3000);
+      </script>
+      <?php endif; ?>
+
+
+      <div class="w-1/3  flex my-8">
       <img src=".././app/assets/logo/symbol.png" alt="Login Image" class="object-cover h-1/2 w-1/2">
     </div>
+
 
       <h3 class="text-2xl font-semibold text-gray-800 mb-2">
        Enter your credentials
@@ -25,6 +92,8 @@
           <?= htmlspecialchars($error) ?>
         </div>
       <?php endif; ?>
+
+
 
       <form method="POST" action="" class="space-y-5">
 
@@ -70,5 +139,8 @@
 
     </div>
   </div>
+
+</div>
+
 
 </div>

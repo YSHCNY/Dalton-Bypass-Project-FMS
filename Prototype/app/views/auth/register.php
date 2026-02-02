@@ -152,7 +152,7 @@
           <!-- Actions -->
           <div class="flex flex-col md:flex-row gap-4 pt-4">
 
-            <a href="index.php?controller=Files&action=files"
+            <a href="index.php?controller=Auth&action=users"
                class="w-full text-center
                       rounded-xl border border-blue-600
                       px-5 py-3 font-medium text-blue-600

@@ -10,10 +10,14 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
   $pageTitle = 'Dashboard';
 } elseif ($currentController == 'Files' && $currentAction == 'files') {
   $pageTitle = 'Files Management';
+} elseif ($currentController == 'Auth' && $currentAction == 'users') {
+  $pageTitle = 'User Management';
+} else {
+  $pageTitle = 'DALTON BYPASS - FMS';
 }
 ?>
  
-<nav class="sticky top-0 z-20
+<nav class="sticky top-0 z-300
             bg-teal-700 backdrop-blur-xl
            
             px-6 py-3
@@ -33,8 +37,51 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
     <span class="font-normal text-teal-500"><?= $_SESSION['position'] ?></span>
 </div>
 
-    <img src=".././app/assets/profiles/<?= $_SESSION['profile_picture']  ?>" 
-         class="w-9 h-9 rounded-full object-cover shadow-sm">
+   
+
+      <div class="relative ml-3 group">
+      <!-- Avatar button -->
+      <button
+      class="flex rounded-full focus:outline-none focus:ring-2 focus:ring-white/40">
+      <img src=".././app/assets/profiles/<?= $_SESSION['profile_picture'] ?>"
+      class="size-9 rounded-full object-cover border border-white/20 shadow-sm"
+      alt="User menu">
+      </button>
+
+
+      <!-- Dropdown -->
+      <div
+      class="absolute right-0 mt-2 w-48
+      origin-top-right rounded-xl
+      bg-teal-800 py-1 shadow-lg
+      ring-1 ring-black/10
+      opacity-0 scale-95 pointer-events-none
+      transition-all duration-150 ease-out
+      group-focus-within:opacity-100
+      group-focus-within:scale-100
+      group-focus-within:pointer-events-auto">
+
+
+      <a href="#"
+      class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 focus:bg-white/5">
+      Your profile
+      </a>
+
+
+      <a href="#"
+      class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 focus:bg-white/5">
+      Settings
+      </a>
+
+
+      <a href="index.php?controller=Auth&action=logout"
+      class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 focus:bg-white/5">
+      Sign out
+      </a>
+      </div>
+      </div>
+
+
   </div>
 
 </nav>

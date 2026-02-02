@@ -62,61 +62,44 @@ class FilesController extends Controller {
                 }
 
 
-public function register() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $username   = $_POST['username'];
-        $password   = $_POST['password'];
-        $confirm    = $_POST['confirm_password'];
-        $firstName  = $_POST['firstName'];
-        $lastName   = $_POST['lastName'];
-        $position   = $_POST['position'];
-        $userLevel  = $_POST['user_level'];
+                // stpre
+                 public function store() {
+                    if (!isset($_SESSION['user'])) {
+                        $this->redirect('index.php?controller=Auth&action=login');
+                    }
 
-        if ($password !== $confirm) {
-            $error = "Passwords do not match";
-            $this->view('auth/register', ['error' => $error]);
-            return;
-        }
+                    if (isset($_FILES['file'])) {
+                        $fileName = $_FILES['file']['name'];
+                        $targetDir =    __DIR__ . "/../uploads/";
+                        $targetFile = $targetDir . basename($fileName);
 
-        $userModel = new User();
+                        $description = $_POST['description'] ?? '';
+                        $uploaded_by = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'] ?? 'guest';
+                        $position = $_SESSION['position'] ?? 'guest';
 
-        if ($userModel->findByUsername($username)) {
-            $error = "Username already exists";
-            $this->view('auth/register', ['error' => $error]);
-            return;
-        }
+                        $fileCategory = $_POST['fileCategory'] ?? 'Unacategorized';
 
-        // === Profile picture upload ===
-        $profileFileName = null; // default
-        $relativePath = null;
+                        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
+                            // pass all 5 arguments
+                            $this->model->create($fileName, $targetFile, $description, $uploaded_by, $fileCategory, $position);
+                            session_start();
+                            $_SESSION['message'] = "File uploaded successfully!";
+                            $_SESSION['msg_type'] = "success";
+                            header("Location: index.php?controller=Files&action=files");
 
-        if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-            // Absolute path on server
-            $uploadDir = __DIR__ . '/../assets/profiles/';
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                            exit;
+                        } else {
+                            session_start();
+                            $_SESSION['message'] = "EEERRRRRRRRRRRRRRR!";
+                            $_SESSION['msg_type'] = "success";
+                            header("Location: index.php?controller=Files&action=files");
+                        echo "Failed to upload file.";
+                    
 
-            $originalName = $_FILES['profile_picture']['name'];
-            $profileFileName = preg_replace("/[^A-Za-z0-9\.\-_() ]/", '_', basename($originalName));
-            $targetFile = $uploadDir . $profileFileName;
+                        }
+                    }
+                }
 
-            if (!move_uploaded_file($_FILES['profile_picture']['tmp_name'], $targetFile)) {
-                $error = "Failed to upload profile picture. Check folder permissions.";
-                $this->view('auth/register', ['error' => $error]);
-                return;
-            }
-
-            // **Store relative path**
-            $relativePath = 'assets/profiles/' . $profileFileName;
-        }
-
-        // Pass relative path to model
-        $userModel->create($username, $password, $firstName, $lastName, $position, $userLevel, $relativePath);
-
-        $this->redirect('index.php?controller=Auth&action=login');
-    } else {
-        $this->view('auth/register');
-    }
-}
 
 
 
