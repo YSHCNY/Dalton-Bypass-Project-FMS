@@ -27,9 +27,9 @@ class FileModel {
 
 
         // Insert file
-    public function create($filename, $filepath, $description , $uploaded_by, $fileCategory, $position) {
-        $stmt = $this->db->prepare("INSERT INTO ".$this->table." (`filename`, `filepath`, `desc`, `uploader`, `category`, `position`) VALUES (?, ?, ?, ?, ?, ?)");
-        return $stmt->execute([$filename, $filepath, $description, $uploaded_by, $fileCategory, $position]);
+    public function create($filename, $filepath, $description , $uploaded_by, $fileCategory, $position, $direction) {
+        $stmt = $this->db->prepare("INSERT INTO ".$this->table." (`filename`, `filepath`, `desc`, `uploader`, `category`, `position`, `direction`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([$filename, $filepath, $description, $uploaded_by, $fileCategory, $position, $direction]);
     }
 
     // Update file

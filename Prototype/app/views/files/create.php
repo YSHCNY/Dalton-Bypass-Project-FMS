@@ -1,7 +1,7 @@
 <!-- include icons -->
 <?php require __DIR__ . '/../partials/icons.php'; ?>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-5">
 
   <div class="w-full max-w-3xl">
 
@@ -39,6 +39,54 @@
               <?php endif; ?>
             </select>
           </div>
+
+
+          <!-- relationship recipient -->
+<div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-end">
+  
+  <!-- LEFT SELECT -->
+  <div>
+    <label class="block text-sm font-medium text-gray-600 mb-1">
+      From
+    </label>
+    <select name="fromCategory" required
+      class="w-full rounded-xl border border-gray-300
+             px-4 py-3 text-gray-800 bg-white
+             focus:outline-none focus:ring-2 focus:ring-teal-500">
+      <?php foreach ($recipientsCateg as $category): ?>
+        <option value="<?= htmlspecialchars($category['category']) ?>">
+          <?= htmlspecialchars($category['category']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+
+  <!-- CENTER ICON -->
+  <div class="flex items-center justify-center pb-3 ">
+    <span class="text-gray-500 text-xl">
+      <?= $viseVersaIcon ?>
+    </span>
+  </div>
+
+  <!-- RIGHT SELECT -->
+  <div>
+    <label class="block text-sm font-medium text-gray-600 mb-1">
+      To
+    </label>
+    <select name="toCategory" required
+      class="w-full rounded-xl border border-gray-300
+             px-4 py-3 text-gray-800 bg-white
+             focus:outline-none focus:ring-2 focus:ring-teal-500">
+      <?php foreach ($recipientsCateg as $category): ?>
+        <option value="<?= htmlspecialchars($category['category']) ?>">
+          <?= htmlspecialchars($category['category']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+
+</div>
+
 
           <!-- Description -->
           <div>

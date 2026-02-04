@@ -14,7 +14,12 @@ class FilesCategModel {
 
            // Get all categories
     public function getAllCateg() {
-        $stmt = $this->db->query("SELECT * FROM ".$this->table);
+        $stmt = $this->db->query("SELECT * FROM ".$this->table." WHERE categoryType = 'filetype' ORDER BY category ASC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);  
+    }
+
+    public function getAllRecipientsCateg() {
+        $stmt = $this->db->query("SELECT * FROM ".$this->table." WHERE categoryType = 'recipients' ORDER BY category ASC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);  
     }
 

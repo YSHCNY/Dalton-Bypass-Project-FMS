@@ -57,10 +57,13 @@ class FilesController extends Controller {
 
                  // Get categories
                 $filesCateg = $this->filesCategModel->getAllCateg();
+                  $recipientsCateg = $this->filesCategModel->getAllRecipientsCateg();
+
                 require __DIR__ . '/../views/files/create.php'; 
 
                 }
 
+              
 
                 // stpre
                  public function store() {
@@ -74,19 +77,19 @@ class FilesController extends Controller {
                         $targetFile = $targetDir . basename($fileName);
 
                         $description = $_POST['description'] ?? '';
-                        $uploaded_by = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'] ?? 'guest';
+                        $uploaded_by =   $_SESSION['id'] ?? 'guest';
                         $position = $_SESSION['position'] ?? 'guest';
-
+                        $direction = $_POST['fromCategory'] . " ⇄ " . $_POST['toCategory'];
                         $fileCategory = $_POST['fileCategory'] ?? 'Unacategorized';
 
                         if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
                             // pass all 5 arguments
-                            $this->model->create($fileName, $targetFile, $description, $uploaded_by, $fileCategory, $position);
+                            $this->model->create($fileName, $targetFile, $description, $uploaded_by, $fileCategory, $position, $direction);
                             session_start();
                             $_SESSION['message'] = "File uploaded successfully!";
                             $_SESSION['msg_type'] = "success";
                             header("Location: index.php?controller=Files&action=files");
-
+ 
                             exit;
                         } else {
                             session_start();

@@ -24,6 +24,7 @@ class AuthController extends Controller {
                 $_SESSION['firstName'] = $user['firstName'];
                 $_SESSION['lastName'] = $user['lastName'];
                 $_SESSION['profile_picture'] = $user['profile_picture'] ?? 'default.png';
+                $_SESSION['id'] = $user['id'];
 
                 $this->redirect('index.php?controller=Auth&action=dashboard&wc=welcome');
 
@@ -49,6 +50,7 @@ public function register() {
         $lastName   = $_POST['lastName'];
         $position   = $_POST['position'];
         $userLevel  = $_POST['user_level'];
+        
 
         $first = $_SESSION['firstName'] ?? '';
         $last  = $_SESSION['lastName'] ?? '';

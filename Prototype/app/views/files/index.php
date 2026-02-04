@@ -40,21 +40,39 @@
       <table id="filesTable"
              class="min-w-full text-sm text-left text-gray-700 py-5">
 
-        <thead class="bg-gray-50 text-gray-600 text-xs uppercase">
-          <tr>
-            <th class="px-4 py-3">File Name
-               <span class="text-gray-400 normal-case">(click to expand)</span>
-            </th>
-            <th class="px-4 py-3">
-              Description
-              <span class="text-gray-400 normal-case">(click to expand)</span>
-            </th>
-            <th class="px-4 py-3">Category</th>
-            <th class="px-4 py-3">Uploader</th>
-            <th class="px-4 py-3">Uploaded At</th>
-            <th class="px-4 py-3 text-center">Action</th>
-          </tr>
-        </thead>
+<thead class="bg-gray-50 text-gray-600 text-xs uppercase">
+  <tr>
+    <th>
+      File Name</th>
+    <th>
+      Description</th>
+    <th>
+      Category</th>
+    <th>
+      Direction</th>
+    <th>
+      Uploader</th>
+    <th>
+      Uploaded At
+      
+    </th>
+    <th class="text-center">
+      Action
+    </th>
+  </tr>
+
+  <tr>
+      <th><div class="header-filter"></div></th>
+      <th><div class="header-filter"></div></th>
+      <th><div class="header-filter"></div></th>
+      <th><div class="header-filter"></div></th>
+      <th><div class="header-filter"></div></th>
+      <th><div class="header-filter"></div></th>
+      <th><div class="header-filter"></div></th>
+
+  </tr>
+</thead>
+
 
         <tbody class="divide-y divide-gray-200">
           <?php if (!empty($files)): ?>
@@ -76,18 +94,32 @@
                   </div>
                 </td>
 
-                <td class="px-4 py-3">
-                  <?= htmlspecialchars($file['category']) ?>
+              <td class="px-4 py-3">
+                  <p class = 'inline-block bg-green-200 text-green-800 
+          px-2 py-0.5 rounded-full text-sm leading-none'><?= htmlspecialchars($file['category']) ?></p>
                 </td>
 
+                <td class="px-4 py-3">
+                  <?= htmlspecialchars($file['direction'] ?? 'No Direction') ?>
+                </td>
+
+              
+
                 <td class="px-4 py-3 text-right">
-                  <span class = 'text-stone-800'><?= htmlspecialchars($file['firstName'] . " " . $file['lastName']) ?></span> <br>
-                  <span class = 'text-stone-400'><?= htmlspecialchars($file['position'] ?? $file['position']) ?></span>
+                  <span class = 'text-stone-800'><?= htmlspecialchars($file['firstName'] . ' ' . $file['lastName']) ?></span> <br>
+                  <span class = 'text-stone-400'><?= htmlspecialchars($file['position']) ?></span>
 
                 </td>
 
                 <td class="px-4 py-3 text-gray-500">
-                  <?= htmlspecialchars($file['uploadedat'] ?? $file['uploaded_at']) ?>
+                
+                <p class="text-sm text-gray-500 leading-tight">
+                  <?= date('M j, Y', strtotime($file['uploadedat'])) ?><br>
+                  <span class="text-xs text-gray-400">
+                    <?= date('g:i A', strtotime($file['uploadedat'])) ?>
+                  </span>
+                </p>
+                                
                 </td>
 
                 <td class="px-4 py-3">
@@ -134,20 +166,95 @@
 
 </div>
 
-
 <script>
 $(document).ready(function () {
-  $('#filesTable').DataTable({
+  const table = $('#filesTable').DataTable({
     pageLength: 50,
-    order: [[4, 'desc']],
+    order: [[5, 'desc']],
     responsive: true,
-     language: {
-            search: "_INPUT_",
-            searchPlaceholder: "Search files..."
-        }
+    orderCellsTop: true,
+    language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search files..."
+    },
+    initComplete: function () {
+      const api = this.api();
+
+      // Create dropdowns for Category (2) and Direction (3)
+      [2, 3].forEach(function(colIndex) {
+        createDropdown(api, colIndex);
+      });
+
+      // Update dropdowns whenever table redraws (filters applied)
+      api.on('draw', function() {
+        updateDropdowns(api);
+      });
+    }
   });
+
+  // -----------------------------
+  // Create a dropdown in the second header row
+  function createDropdown(api, columnIndex) {
+    const column = api.column(columnIndex);
+    const headerFilterTh = $(column.header()).closest('table')
+                                .find('thead tr:eq(1) th').eq(columnIndex);
+
+    const select = $('<select class="column-filter"><option value="">All</option></select>')
+      .appendTo(headerFilterTh)
+      .on('change', function() {
+        const val = $.fn.dataTable.util.escapeRegex($(this).val());
+        column.search(val ? '^' + val + '$' : '', true, false).draw();
+      });
+
+    populateDropdown(column, select);
+  }
+
+  // Populate dropdown with unique text from column
+  function populateDropdown(column, select) {
+    const values = column.nodes().to$()
+      .map(function() { return $(this).text().trim(); })
+      .get()
+      .filter((v, i, a) => v && a.indexOf(v) === i)
+      .sort();
+
+    select.empty().append('<option value="">All</option>');
+    values.forEach(v => select.append(`<option value="${v}">${v}</option>`));
+  }
+
+  // Update dropdowns based on currently visible rows
+  function updateDropdowns(api) {
+    const visibleRows = api.rows({ search: 'applied' }).nodes();
+
+    [2, 3].forEach(function(colIndex) {
+      const column = api.column(colIndex);
+      const headerFilterTh = $(column.header()).closest('table')
+                                  .find('thead tr:eq(1) th').eq(colIndex);
+      const select = headerFilterTh.find('select');
+      const selected = select.val();
+
+      // Get unique values from visible rows
+      const values = $(visibleRows)
+        .map(function() { return $(this).find('td').eq(colIndex).text().trim(); })
+        .get()
+        .filter((v, i, a) => v && a.indexOf(v) === i)
+        .sort();
+
+      // Repopulate dropdown and keep selection
+      select.empty().append('<option value="">All</option>');
+      values.forEach(v => select.append(`<option value="${v}">${v}</option>`));
+      select.val(selected);
+    });
+  }
 });
+
+
 </script>
+
+
+
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -171,6 +278,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <style>
   /* Description container */
+  .column-filter {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+}
+
+
 .desc-container {
   max-width: 320px;
   white-space: nowrap;
@@ -192,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* filename td */
 .filename-container {
-  max-width: 250px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
