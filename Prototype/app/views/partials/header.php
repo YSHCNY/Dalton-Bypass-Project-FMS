@@ -18,7 +18,7 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
 ?>
  
 <nav class="sticky top-0 z-300
-            bg-teal-700 backdrop-blur-xl
+            bg-sky-700 backdrop-blur-xl
            
             px-6 py-3
             flex justify-between items-center">
@@ -34,7 +34,7 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
   <div class="flex items-center gap-3">
     <div class = 'text-right'>
     <span class="font-medium text-stone-50"><?= $_SESSION['firstName'] . ' ' . $_SESSION['lastName']?></span> <br>
-    <span class="font-normal text-teal-500"><?= $_SESSION['position'] ?></span>
+    <span class="font-normal text-sky-500"><?= $_SESSION['position'] ?></span>
 </div>
 
    
@@ -53,7 +53,7 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
       <div
       class="absolute right-0 mt-2 w-48
       origin-top-right rounded-xl
-      bg-teal-800 py-1 shadow-lg
+      bg-sky-800 py-1 shadow-lg
       ring-1 ring-black/10
       opacity-0 scale-95 pointer-events-none
       transition-all duration-150 ease-out
@@ -74,7 +74,7 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
       </a>
 
 
-      <a href="index.php?controller=Auth&action=logout"
+      <a href="index.php?controller=Auth&action=logout&wc=signedOut"
       class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 focus:bg-white/5">
       Sign out
       </a>

@@ -23,9 +23,9 @@
 
     <a <?= $disabled ?>href="index.php?controller=Files&action=create"
        class="inline-flex items-center gap-2 <?= $state ?>
-              bg-teal-600 text-white
+              bg-sky-600 text-white
               px-4 py-2.5 rounded-xl
-              shadow-sm hover:bg-teal-700 border-2 border-dashed
+              shadow-sm hover:bg-sky-700 border-2 border-dashed
               transition">
       <?=$fileIcon?>
      
@@ -43,9 +43,9 @@
 <thead class="bg-gray-50 text-gray-600 text-xs uppercase">
   <tr>
     <th>
-      File Name</th>
+      File Name <span class = 'text-xxs text-gray-400 italic'>(CLICK TO EXPAND)</span></th>
     <th>
-      Description</th>
+      Description <span class = 'text-xxs text-gray-400 italic'>(CLICK TO EXPAND)</span></th>
     <th>
       Category</th>
     <th>
@@ -83,14 +83,18 @@
                  
                    <div class="desc-container text-gray-600"
                        data-id="<?= $file['id'] ?>">
-                    <?= htmlspecialchars($file['filename']) ?>
+                    
+                    <?= htmlspecialchars($file['filename']) ?> <br>
+                        <span class="text-xxs text-gray-400">
+                          Upload # <?= $file['id'] ?>
+                      </span>
                   </div>
                 </td>
 
                 <td class="px-4 py-3">
                   <div class="desc-container text-gray-600"
                        data-id="<?= $file['id'] ?>">
-                    <?= htmlspecialchars($file['desc'] ?? $file['description']) ?>
+                    <?= htmlspecialchars($file['desc'] ?? $file['description']) ?><br>
                   </div>
                 </td>
 
@@ -100,7 +104,9 @@
                 </td>
 
                 <td class="px-4 py-3">
-                  <?= htmlspecialchars($file['direction'] ?? 'No Direction') ?>
+              
+
+                  <?= htmlspecialchars($file['directionFrom'] . ' ⇄ ' . $file['directionTo'] ?? 'No Direction') ?>
                 </td>
 
               
@@ -130,14 +136,17 @@
                        title="Download">
                       <?= $downloadIcon ?>
                     </a>
-                <?php if($_SESSION['user_level'] === '1'): ?>
+
+                <?php if($_SESSION['user_level'] === '1' || $_SESSION['user_level'] === '2'): ?>
                     <a href="index.php?controller=Files&action=edit&id=<?= $file['id'] ?>"
                        class="p-2 rounded-lg bg-emerald-100 border border-emerald-500 text-emerald-500 hover:text-white  hover:bg-emerald-600 transition"
-                       title="Edit">
-                                            <?= $editIcon ?>
-
-                    </a>
+                       title="Edit"> 
+                       <?= $editIcon ?>
+                      </a>
+                     <?php endif; ?>
             
+
+                <?php if($_SESSION['user_level'] === '1'): ?>
 
                     <a href="index.php?controller=Files&action=delete&id=<?= $file['id'] ?>"
                        onclick="return confirm('Delete this file?')"
@@ -145,7 +154,9 @@
                        title="Delete">
                       <?= $deleteIcon ?>
                     </a>
-    <?php endif; ?>
+                     <?php endif; ?>
+
+   
                   </div>
                 </td>
 
@@ -198,14 +209,20 @@ $(document).ready(function () {
     const column = api.column(columnIndex);
     const headerFilterTh = $(column.header()).closest('table')
                                 .find('thead tr:eq(1) th').eq(columnIndex);
+                                let activeFilterCol = null;
 
-    const select = $('<select class="column-filter"><option value="">All</option></select>')
+    const select = $('<select class=" column-filter w-full  bg-white py-2  text-sm rounded-lg border border-gray-300 shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition"><option value="">All</option></select>')
       .appendTo(headerFilterTh)
-      .on('change', function() {
-        const val = $.fn.dataTable.util.escapeRegex($(this).val());
-        column.search(val ? '^' + val + '$' : '', true, false).draw();
-      });
-
+      .on('focus', function () {
+          activeFilterCol = columnIndex;
+        })
+        .on('blur', function () {
+          activeFilterCol = null;
+        })
+        .on('change', function () {
+          const val = $.fn.dataTable.util.escapeRegex($(this).val());
+          column.search(val ? '^' + val + '$' : '', true, false).draw();
+        });
     populateDropdown(column, select);
   }
 
@@ -222,29 +239,32 @@ $(document).ready(function () {
   }
 
   // Update dropdowns based on currently visible rows
-  function updateDropdowns(api) {
-    const visibleRows = api.rows({ search: 'applied' }).nodes();
+function updateDropdowns(api) {
+  const visibleRows = api.rows({ search: 'applied' }).nodes();
 
-    [2, 3].forEach(function(colIndex) {
-      const column = api.column(colIndex);
-      const headerFilterTh = $(column.header()).closest('table')
-                                  .find('thead tr:eq(1) th').eq(colIndex);
-      const select = headerFilterTh.find('select');
-      const selected = select.val();
+  [2, 3].forEach(function(colIndex) {
+    if (colIndex === activeFilterCol) return; // 👈 don’t touch active dropdown
 
-      // Get unique values from visible rows
-      const values = $(visibleRows)
-        .map(function() { return $(this).find('td').eq(colIndex).text().trim(); })
-        .get()
-        .filter((v, i, a) => v && a.indexOf(v) === i)
-        .sort();
+    const column = api.column(colIndex);
+    const headerFilterTh = $(column.header()).closest('table')
+      .find('thead tr:eq(1) th').eq(colIndex);
 
-      // Repopulate dropdown and keep selection
-      select.empty().append('<option value="">All</option>');
-      values.forEach(v => select.append(`<option value="${v}">${v}</option>`));
-      select.val(selected);
-    });
-  }
+    const select = headerFilterTh.find('select');
+    const selected = select.val();
+
+    const values = $(visibleRows)
+      .map(function() {
+        return $(this).find('td').eq(colIndex).text().trim();
+      })
+      .get()
+      .filter((v, i, a) => v && a.indexOf(v) === i)
+      .sort();
+
+    select.empty().append('<option value="">All</option>');
+    values.forEach(v => select.append(`<option value="${v}">${v}</option>`));
+    select.val(selected);
+  });
+}
 });
 
 
@@ -261,68 +281,53 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.desc-container').forEach(container => {
     const id = container.dataset.id;
 
-    if (sessionStorage.getItem('desc-' + id) === 'expanded') {
-      container.classList.add('expanded');
-    }
+    // Check if text overflows
+    const isOverflowing = container.scrollWidth > container.clientWidth;
 
-    container.addEventListener('click', () => {
-      container.classList.toggle('expanded');
-      sessionStorage.setItem(
-        'desc-' + id,
-        container.classList.contains('expanded') ? 'expanded' : 'collapsed'
-      );
-    });
+    if (isOverflowing) {
+      container.classList.add('can-expand');
+
+      // Restore state
+      if (sessionStorage.getItem('desc-' + id) === 'expanded') {
+        container.classList.add('expanded');
+      }
+
+      container.addEventListener('click', () => {
+        container.classList.toggle('expanded');
+        sessionStorage.setItem(
+          'desc-' + id,
+          container.classList.contains('expanded') ? 'expanded' : 'collapsed'
+        );
+      });
+    }
   });
 });
 </script>
 
 <style>
-  /* Description container */
-  .column-filter {
-  width: 100%;
-  padding: 4px 6px;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-}
-
-
 .desc-container {
   max-width: 320px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
 }
+
+/* Expanded state */
 .desc-container.expanded {
   white-space: normal;
 }
-.desc-container::after {
-  content: '  [+]';
-  color: #3b82f6;
-}
-.desc-container.expanded::after {
-  content: '  [-]';
-}
 
-
-/* filename td */
-.filename-container {
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Only expandable items get [+] */
+.desc-container.can-expand {
   cursor: pointer;
 }
 
-.filename.expanded {
-  white-space: normal;
-}
-.filename::after {
+.desc-container.can-expand::after {
   content: '  [+]';
   color: #3b82f6;
 }
-.filename.expanded::after {
+
+.desc-container.can-expand.expanded::after {
   content: '  [-]';
 }
 </style>

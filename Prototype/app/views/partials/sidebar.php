@@ -23,7 +23,7 @@ $currentAction = $_GET['action'] ?? '';
     <li>
       <a href="index.php?controller=Auth&action=dashboard"
          class="flex items-center gap-3 px-3 py-2.5 rounded-xl  
-          <?= ($currentController == 'Auth' && $currentAction == 'dashboard') ? 'bg-teal-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
+          <?= ($currentController == 'Auth' && $currentAction == 'dashboard') ? 'bg-sky-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
       
         <?= $dashboardIcon ?>
         Dashboard
@@ -33,7 +33,7 @@ $currentAction = $_GET['action'] ?? '';
     <li>
       <a href="index.php?controller=Files&action=files"
          class="flex items-center gap-3 px-3 py-2.5 rounded-xl  
-         <?= ($currentController == 'Files' && $currentAction == 'files') ? 'bg-teal-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
+         <?= ($currentController == 'Files' && $currentAction == 'files') ? 'bg-sky-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
         <?= $fileIcon ?>
         Files
       </a>
@@ -45,7 +45,7 @@ $currentAction = $_GET['action'] ?? '';
     <li>
       <a href="index.php?controller=Auth&action=users"
          class="flex items-center gap-3 px-3 py-2.5 rounded-xl 
-         <?= ($currentController == 'Auth' && $currentAction == 'users') ? 'bg-teal-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
+         <?= ($currentController == 'Auth' && $currentAction == 'users') ? 'bg-sky-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
         <?= $usersIcon ?>
         Users
       </a>

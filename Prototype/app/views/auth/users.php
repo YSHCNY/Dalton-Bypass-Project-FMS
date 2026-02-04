@@ -26,10 +26,10 @@
     <a <?= $disabled ?>
        href="index.php?controller=Auth&action=register"
        class="inline-flex items-center gap-2 <?= $state ?>
-              bg-teal-600 text-white
+              bg-sky-600 text-white
               px-5 py-2.5 rounded-xl
-              shadow-sm hover:bg-teal-700
-              border border-dashed border-teal-400
+              shadow-sm hover:bg-sky-700
+              border border-dashed border-sky-400
               transition">
       <?= $usersIcon ?>
       <span class="font-medium">Create User</span>

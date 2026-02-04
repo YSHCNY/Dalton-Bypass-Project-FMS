@@ -91,7 +91,9 @@ public function register() {
             }
 
             // **Store relative path**
-            $relativePath = 'assets/profiles/' . $profileFileName;
+            // $relativePath = 'assets/profiles/' . $profileFileName;
+            $relativePath =  $profileFileName;
+            
         }
 
         // Pass relative path to model

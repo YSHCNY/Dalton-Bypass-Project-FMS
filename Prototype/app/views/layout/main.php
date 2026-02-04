@@ -62,7 +62,7 @@
             <div id="flash"
                 class="mb-6 flex items-center gap-3
                         px-5 py-4 rounded-xl
-                        bg-gradient-to-r from-teal-500 to-emerald-500
+                        bg-gradient-to-r from-sky-500 to-emerald-500
                         text-white shadow-lg
                         transition-all duration-500 ease-out
                         opacity-0 translate-y-2">

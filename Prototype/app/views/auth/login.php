@@ -19,7 +19,7 @@
     <div class="w-full md:w-1/2 p-8 md:p-12">
    
           
-      <?php if (isset($_GET['wc']) && $_GET['wc'] === 'logout'): ?>
+      <?php if (isset($_GET['wc']) && $_GET['wc'] === 'signedOut'): ?>
       <div id="flash"
       class="   mb-6 flex items-center gap-3
       px-5 py-4 rounded-2xl
@@ -120,8 +120,8 @@
         </div>
 
         <button type="submit"
-          class="w-full rounded-xl bg-teal-600 px-4 py-3 font-medium
-                 text-white hover:bg-teal-700 transition">
+          class="w-full rounded-xl bg-sky-700 px-4 py-3 font-medium
+                 text-white hover:bg-sky-800 transition">
           Login
         </button>
 

@@ -185,7 +185,7 @@ const profileInput = document.getElementById('profileInput');
 const profilePreview = document.getElementById('profilePreview');
 const profileDropZone = document.getElementById('profileDropZone');
 
-profileDropZone.addEventListener('click', () => profileInput.click());
+// profileDropZone.addEventListener('click', () => profileInput.click());
 
 profileInput.addEventListener('change', () => {
     const file = profileInput.files[0];
