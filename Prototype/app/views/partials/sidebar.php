@@ -12,9 +12,10 @@ $currentAction = $_GET['action'] ?? '';
 
   <div class="px-5 py-4 ">
 
- <div class="w-1/2 my-2 mx-auto">
-      <img src=".././app/assets/logo/brand.png" alt="Login Image" class="object-cover h-full w-full">
-    </div>
+ <div class="w-44 my-2 mx-auto">
+  <img src=".././app/assets/logo/brand2.png"
+       class="w-full h-auto">
+</div>
   </div>
 
   <ul class="flex-1 px-3 py-4 space-y-1 text-gray-700">
@@ -50,6 +51,17 @@ $currentAction = $_GET['action'] ?? '';
         Users
       </a>
     </li>
+
+    <li>
+      <a href="index.php?controller=Syslogs&action=syslogs"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-xl 
+         <?= ($currentController == 'Auth' && $currentAction == 'syslogs') ? 'bg-sky-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
+        <?= $clipBoardIcon ?>
+        System Logs
+      </a>
+    </li>
+    
+    
     <?php endif; ?>
 
   </ul>
@@ -63,5 +75,6 @@ $currentAction = $_GET['action'] ?? '';
   </div> -->
 
 </nav>
+
 
 

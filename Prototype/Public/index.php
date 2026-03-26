@@ -8,7 +8,7 @@
     <title>DALTON BYPASS - FMS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Favicon -->
-<link rel="icon" type="image/png" href=".././app/assets/logo/symbol.png" />
+<link rel="icon" type="image/png" href=".././app/assets/logo/icon.png" />
 
 </head>
 
