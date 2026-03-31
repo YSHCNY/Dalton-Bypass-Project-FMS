@@ -2,39 +2,29 @@
 session_start();
 require_once '../app/core/Controller.php';
 require_once '../app/models/User.php';
-require_once "../app/models/Syslogs.php";
+require_once '../app/models/Contract.php';
 
 
-
-class SyslogsController extends Controller {
-
+class ContractsController extends Controller {
 
             private $model;
 
             public function __construct() {
-                $this->model = new SyslogsModel();
+                $this->model = new ContractModel();
             }
 
-              public function syslogs() {
+              public function contracts() {
                 if (!isset($_SESSION['user'])) {
                     $this->redirect('index.php?controller=Auth&action=login');
                 }
 
-
-                // render syslogs list view
-                $content = $this->renderView('syslogs/index', [
-                    'syslogs' => $this->model->getAllData(),
-              
+                // render contracts list view
+                $content = $this->renderView('contracts/index', [
+                    'contracts' => $this->model->getAll(),
                 ]);
 
-
-                
                 $this->view('layout/main', [
                     'content' => $content
                 ]);
-
-                
-              
             }
-
 }

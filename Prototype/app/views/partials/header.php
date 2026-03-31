@@ -19,7 +19,7 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
 }
 ?>
  
-<nav class="sticky top-0 z-300
+<nav class="sticky top-0 z-40
             bg-sky-700 backdrop-blur-xl
            
             px-6 py-3

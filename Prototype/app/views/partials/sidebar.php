@@ -40,6 +40,15 @@ $currentAction = $_GET['action'] ?? '';
       </a>
     </li>
 
+    <li>
+      <a href="index.php?controller=Contracts&action=contracts"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-xl  
+         <?= ($currentController == 'Contracts' && $currentAction == 'contracts') ? 'bg-sky-600 text-white' : 'text-gray-700 hover:bg-gray-200 transition' ?>">
+        <?= $contractsIcon ?>
+        Contracts
+      </a>
+    </li>
+
     <?php if($_SESSION['user_level'] === '1'): ?>
     <li class="text-xs uppercase text-gray-400 px-3 mt-5 mb-2">More</li>
 
@@ -60,7 +69,8 @@ $currentAction = $_GET['action'] ?? '';
         System Logs
       </a>
     </li>
-    
+
+
     
     <?php endif; ?>
 
