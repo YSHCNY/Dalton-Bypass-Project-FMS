@@ -2,7 +2,7 @@
 session_start();
 require_once '../app/core/Controller.php';
 require_once '../app/models/User.php';
-require_once '../app/models/Contract.php';
+require_once '../app/models/Contracts.php';
 
 
 class ContractsController extends Controller {
@@ -20,7 +20,7 @@ class ContractsController extends Controller {
 
                 // render contracts list view
                 $content = $this->renderView('contracts/index', [
-                    'contracts' => $this->model->getAll(),
+                    'contracts' => $this->model->getAllContracts(),
                 ]);
 
                 $this->view('layout/main', [
