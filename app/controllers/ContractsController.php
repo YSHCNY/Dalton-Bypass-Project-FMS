@@ -2,7 +2,7 @@
 session_start();
 require_once '../app/core/Controller.php';
 require_once '../app/models/User.php';
-require_once '../app/models/Contract.php';
+require_once '../app/models/Contracts.php';
 
 
 class ContractsController extends Controller {
@@ -27,4 +27,9 @@ class ContractsController extends Controller {
                     'content' => $content
                 ]);
             }
+
+
+
+
+            
 }
