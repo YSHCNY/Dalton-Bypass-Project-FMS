@@ -14,6 +14,8 @@ if ($currentController == 'Auth' && $currentAction == 'dashboard') {
   $pageTitle = 'User Management';
 } elseif ($currentController == 'Syslogs' && $currentAction == 'syslogs') {
   $pageTitle = 'System Logs';
+} elseif ($currentController == 'Contracts' && $currentAction == 'contracts') {
+  $pageTitle = 'System Logs';
 } else {
   $pageTitle = 'DALTON BYPASS - FMS';
 }
