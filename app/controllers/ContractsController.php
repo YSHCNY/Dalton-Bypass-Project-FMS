@@ -20,7 +20,7 @@ class ContractsController extends Controller {
 
                 // render contracts list view
                 $content = $this->renderView('contracts/index', [
-                    'contracts' => $this->model->getAll(),
+                    'contracts' => $this->model->getAllContracts(),
                 ]);
 
                 $this->view('layout/main', [
@@ -31,5 +31,5 @@ class ContractsController extends Controller {
 
 
 
-            
+
 }
